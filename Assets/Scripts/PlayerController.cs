@@ -52,6 +52,7 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
+        m_TargetCharacterHeight = capsuleHeightStanding;
         m_Controller = GetComponent<CharacterController>();
         m_InputHandler = GetComponent<PlayerInputHandler>();
         m_Controller.enableOverlapRecovery = true;
