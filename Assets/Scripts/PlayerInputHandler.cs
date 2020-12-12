@@ -32,7 +32,7 @@ public class PlayerInputHandler : MonoBehaviour
         {
             Vector3 move = new Vector3(Input.GetAxisRaw("Horizontal"), 0f, Input.GetAxisRaw("Vertical"));
             move = Vector3.ClampMagnitude(move, 1);
-            Debug.Log(move);
+            // Debug.Log(move);
             return move;
         }
 

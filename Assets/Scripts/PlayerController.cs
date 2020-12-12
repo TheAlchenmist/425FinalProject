@@ -70,6 +70,28 @@ public class PlayerController : MonoBehaviour
         UpdateCharacterHeight(false);
 
         HandleCharacterMovement();
+
+        if (Input.GetMouseButtonDown(0))
+        {
+            RaycastHit hit;
+            Ray ray = GetComponentInChildren<Camera>().ScreenPointToRay(Input.mousePosition);
+            if(Physics.Raycast(ray, out hit))
+            {
+                if(hit.collider.GetComponent<BoxCollider>())
+                {
+                    var door = hit.collider.gameObject.GetComponent<PowerCellHolder>();
+                    if (door != null)
+                    {
+                        door.StartCoroutine(door.OpenDoor());
+                    }
+                    var chest = hit.collider.gameObject.GetComponent<Chest>();
+                    if (chest != null)
+                    {
+                        chest.OpenChest();
+                    }
+                }
+            }
+        }
     }
 
     void GroundCheck()
