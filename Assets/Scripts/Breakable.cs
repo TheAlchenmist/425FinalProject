@@ -16,9 +16,10 @@ public class Breakable : MonoBehaviour
     
     private void OnTriggerEnter(Collider other)
     {
-        if (other.GetComponentInChildren<ItemInteraction>())
+        if (other.GetComponentInChildren<ItemInteraction>() && rigidBody.isKinematic)
         {
             rigidBody.isKinematic = false;
+            GetComponent<AudioSource>().Play();
             StartCoroutine(DeleteAfterTwoSeconds());
         }
     }

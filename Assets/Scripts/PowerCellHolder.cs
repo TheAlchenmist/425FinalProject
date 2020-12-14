@@ -11,36 +11,61 @@ public class PowerCellHolder : MonoBehaviour
     public float AngleOpen = 120f;
 
     Quaternion RotationOpen;
+    Quaternion RotationClosed;
     
     public float OpenTime = 2f;
 
-    bool isOpen = false;
+    bool isClosed = true;
+    bool opening = false;
+
+    float changeSign;
 
     // Start is called before the first frame update
     void Start()
     {
         RotationOpen = Quaternion.Euler(0, AngleOpen, 0);
+        RotationClosed = Quaternion.Euler(0, AngleClosed, 0);
     }
 
     public IEnumerator OpenDoor()
     {
+        if (opening)
+        {
+            changeSign *= -1;
+            isClosed = !isClosed;
+            yield break;
+        }
+
         float iParam = 0;
 
-        while (!isOpen)
-        {
-            iParam = iParam + Time.deltaTime / OpenTime;
+        opening = true;
 
-            if (iParam >= 1)
+        if (isClosed)
+        {
+            iParam = 0;
+            changeSign = 1;
+        }
+        else
+        {
+            iParam = 1;
+            changeSign = -1;
+        }
+
+        while (opening)
+        {
+            iParam = iParam + changeSign * Time.deltaTime / OpenTime;
+
+            if (iParam >= 1 || iParam <= 0)
             {
-                iParam = 1;
-                isOpen = true;
+                iParam = Mathf.Clamp(iParam, 0, 1);
+                opening = false;
             }
 
-            PowerCellDoor.transform.localRotation = Quaternion.Lerp(Quaternion.Euler(0, 0, 0), RotationOpen, iParam);
+            PowerCellDoor.transform.localRotation = Quaternion.Lerp(RotationClosed, RotationOpen, iParam);
 
             yield return null;
         }
         turnOnPowerCell.GetComponent<CapsuleCollider>().enabled = true;
-        isOpen = true;
+        isClosed = !isClosed;
     }
 }

@@ -62,7 +62,16 @@ public class PlayerController : MonoBehaviour
         UpdateCharacterHeight(true);
     }
 
-    
+    void OnTriggerStay(Collider collisionInfo)
+    {
+        Debug.Log(collisionInfo.gameObject.name);
+        var door = collisionInfo.gameObject.GetComponent<PowerCellHolder>();
+        if (door && Input.GetKey("e"))
+        {
+            door.StartCoroutine(door.OpenDoor());
+        }
+    }
+
     void Update()
     {
         hasJumpedThisFrame = false;
@@ -98,11 +107,6 @@ public class PlayerController : MonoBehaviour
 
                 if (hit.collider.GetComponent<BoxCollider>())
                 {
-                    var door = hit.collider.gameObject.GetComponent<PowerCellHolder>();
-                    if (door != null)
-                    {
-                        door.StartCoroutine(door.OpenDoor());
-                    }
                     var chest = hit.collider.gameObject.GetComponent<Chest>();
                     if (chest != null)
                     {

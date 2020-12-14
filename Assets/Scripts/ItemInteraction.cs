@@ -55,6 +55,8 @@ public class ItemInteraction : MonoBehaviour
 
         isThrusting = true;
 
+        GetComponent<AudioSource>().Play();
+
         float interpolationParameter = 0;
         bool forward = true;
 

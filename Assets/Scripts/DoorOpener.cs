@@ -14,6 +14,11 @@ public class DoorOpener : MonoBehaviour
             if (!doorOpened)
             {
                 GetComponent<Animation>().Play();
+                if (GetComponent<AudioSource>())
+                {
+                    GetComponent<AudioSource>().Play();
+                    GetComponent<AudioSource>().loop = false;
+                }
                 doorOpened = true;
             }
         }

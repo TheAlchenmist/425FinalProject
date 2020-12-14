@@ -27,6 +27,7 @@ public class EntryConsoleHandler : MonoBehaviour
     {
         if (Vector3.Distance(consolePosition, player.transform.position) <= proximity && Input.GetKeyDown("e") && (GameObject.ReferenceEquals(player,gc.CheckActive())))
         {
+            GetComponent<AudioSource>().Play();
             tutOpen = true;
             isItOn = !isItOn;
             mesh.material = isItOn ? onColor : offColor;
