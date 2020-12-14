@@ -6,17 +6,23 @@ public class Chest : MonoBehaviour
 {
     private Animation animator = default;
     private bool isOpen = false;
+    public bool tutOpen = false;
 
     void Start()
     {
         animator = GetComponent<Animation>();
     }
 
-    public void OpenChest()
+    public bool OpenChest()
     {
         if (!isOpen) { 
             animator.Play();
             isOpen = true;
+            tutOpen = true;
+
+            return isOpen;
         }
+
+        return false;
     }
 }

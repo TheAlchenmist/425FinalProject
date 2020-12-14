@@ -50,6 +50,8 @@ public class PlayerController : MonoBehaviour
     const float k_JumpGroundingPreventionTime = 0.2f;
     const float k_GroundCheckDistanceInAir = 0.07f;
 
+    bool chestIsOpen = false;
+
     void Start()
     {
         m_TargetCharacterHeight = capsuleHeightStanding;
@@ -72,13 +74,29 @@ public class PlayerController : MonoBehaviour
 
         HandleCharacterMovement();
 
+        bool hasWrench = false;
+        GameObject wrench = GameObject.Find("DWMU");
+        if (wrench.transform.parent == gameObject.transform)
+        {
+            hasWrench = true;
+        }
+
         if (Input.GetMouseButtonDown(0))
         {
             RaycastHit hit;
+
             Ray ray = GetComponentInChildren<Camera>().ScreenPointToRay(Input.mousePosition);
             if(Physics.Raycast(ray, out hit))
             {
-                if(hit.collider.GetComponent<BoxCollider>())
+                // if click and ray hits chest and chest is open then set wrench parent to player object
+                if (hit.collider.gameObject.name == "Chest" && chestIsOpen)
+                {
+                    if (!hasWrench) {
+                        wrench.GetComponent<ItemInteraction>().SetParentToPlayer();
+                    }
+                }
+
+                if (hit.collider.GetComponent<BoxCollider>())
                 {
                     var door = hit.collider.gameObject.GetComponent<PowerCellHolder>();
                     if (door != null)
@@ -89,8 +107,26 @@ public class PlayerController : MonoBehaviour
                     if (chest != null)
                     {
                         chest.OpenChest();
+                        chestIsOpen = true;
+                    }
+                    var wrenchScript = hit.collider.gameObject.GetComponent<ItemInteraction>();
+                    if (wrenchScript != null)
+                    {
+                        wrenchScript.SetParentToPlayer();
                     }
                 }
+            }
+        }
+        
+        // item interaction
+        if (hasWrench) {
+            if (Input.GetMouseButtonDown(1))
+            {
+                wrench.GetComponent<ItemInteraction>().Drop();
+            }
+            else if (Input.GetMouseButtonDown(0))
+            {
+                wrench.GetComponent<ItemInteraction>().Use();
             }
         }
     }

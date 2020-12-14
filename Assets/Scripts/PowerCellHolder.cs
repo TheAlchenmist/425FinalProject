@@ -5,6 +5,7 @@ using UnityEngine;
 public class PowerCellHolder : MonoBehaviour
 {
     public GameObject PowerCellDoor = default;
+    public GameObject turnOnPowerCell;
 
     public float AngleClosed = 0f;
     public float AngleOpen = 120f;
@@ -39,7 +40,7 @@ public class PowerCellHolder : MonoBehaviour
 
             yield return null;
         }
-
+        turnOnPowerCell.GetComponent<CapsuleCollider>().enabled = true;
         isOpen = true;
     }
 }
